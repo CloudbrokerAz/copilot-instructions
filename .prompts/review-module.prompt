@@ -1,0 +1,270 @@
+# Review Terraform Module Design
+
+You are conducting a comprehensive review of a Terraform module for compliance with **HashiCorp official module design principles** and **Azure Verified Modules (AVM)** standards (when applicable).
+
+## Review Process
+
+### Step 1: Identify Module Context
+
+1. **Cloud Provider**: Which provider? (Azure, AWS, GCP, multi-cloud)
+2. **Module Classification**:
+   - Resource Module (single primary resource)
+   - Pattern Module (multiple resources/solution)
+   - Utility Module (functions/helpers)
+3. **Module Name**: Does it follow naming conventions?
+   - HashiCorp: `terraform-<provider>-<name>`
+   - AVM (Azure): `avm-{res|ptn|utl}-<provider>-<name>`
+
+### Step 2: Evaluate Scoping (HashiCorp Principles)
+
+Review against three dimensions:
+
+#### **Encapsulation** ✅ ❌
+- Does it group infrastructure that's ALWAYS deployed together?
+- Is the module's purpose explainable in one sentence?
+- Does it avoid being too complex or too granular?
+
+**Finding**: [Pass/Fail with explanation]
+
+#### **Privileges** ✅ ❌
+- Does it respect security/permission boundaries?
+- Would using this module violate segregation of duties?
+- Is it appropriate for a single team to deploy?
+
+**Finding**: [Pass/Fail with explanation]
+
+#### **Volatility** ✅ ❌
+- Are long-lived and short-lived resources properly separated?
+- Does it avoid mixing stable infrastructure with frequently changing code?
+- Is the change frequency consistent across resources?
+
+**Finding**: [Pass/Fail with explanation]
+
+**Overall Scoping Score**: [Pass/Needs Improvement/Fail]
+
+### Step 3: Check Structure Compliance
+
+#### Directory Structure ✅ ❌
+Expected structure:
+```
+terraform-<provider>-<name>/
+├── main.tf              ✅ ❌ Present?
+├── variables.tf         ✅ ❌ Present?
+├── outputs.tf           ✅ ❌ Present?
+├── versions.tf          ✅ ❌ Present?
+├── README.md            ✅ ❌ Present? Complete?
+├── CHANGELOG.md         ✅ ❌ Present?
+├── LICENSE              ✅ ❌ Present?
+├── .gitignore           ✅ ❌ Present?
+├── examples/            ✅ ❌ Directory exists?
+│   ├── basic/          ✅ ❌ REQUIRED - Present?
+│   ├── complete/       ✅ ❌ Present?
+│   └── [scenarios]/    ✅ ❌ 3-5 scenarios?
+├── tests/              ✅ ❌ Present?
+└── modules/            ✅ ❌ If nested, present?
+```
+
+**Finding**: [List missing or incorrect files]
+
+### Step 4: Review Variables (MVP Approach)
+
+#### Required Variables
+- ✅ ❌ Only truly required inputs (no sensible defaults)?
+- ✅ ❌ Clear, descriptive names?
+- ✅ ❌ Proper type constraints?
+- ✅ ❌ Comprehensive descriptions?
+
+#### Optional Variables
+- ✅ ❌ Sensible, WAF-aligned defaults?
+- ✅ ❌ Follow naming patterns (`enable_<feature>`, `<resource>_<property>`)?
+- ✅ ❌ Validation blocks where appropriate?
+
+#### MVP Compliance (HashiCorp)
+- ✅ ❌ Targets 80% of use cases (not edge cases)?
+- ✅ ❌ Only most commonly modified arguments exposed?
+- ✅ ❌ Avoids complex conditionals in MVP?
+- ✅ ❌ Doesn't try to do multiple things?
+
+**Finding**: [Pass/Needs Improvement with specific issues]
+
+### Step 5: Review Outputs (Maximize!)
+
+#### Output Coverage
+- ✅ ❌ Primary resource ID output?
+- ✅ ❌ Primary resource name output?
+- ✅ ❌ All useful attributes output (even if not immediately needed)?
+- ✅ ❌ Complex objects output for advanced users?
+- ✅ ❌ Sensitive outputs marked appropriately?
+
+#### Output Quality
+- ✅ ❌ Clear, descriptive output descriptions?
+- ✅ ❌ Follows naming conventions?
+- ✅ ❌ Can be chained with other modules?
+
+**Finding**: [List missing or inadequate outputs]
+
+### Step 6: Evaluate Resource Configuration
+
+#### Best Practices
+- ✅ ❌ WAF/security best practices as defaults?
+- ✅ ❌ No hardcoded credentials?
+- ✅ ❌ Proper use of local values?
+- ✅ ❌ Resource dependencies correctly defined?
+
+#### For Azure (AVM Interfaces)
+If Azure module, check for:
+- ✅ ❌ **Diagnostic Settings** support (logs to Log Analytics, Storage, Event Hub)?
+- ✅ ❌ **RBAC** role assignment support?
+- ✅ ❌ **Resource Locks** support (CanNotDelete, ReadOnly)?
+- ✅ ❌ **Tags** support with inheritance/merging?
+- ✅ ❌ **Private Endpoints** support (if applicable)?
+- ✅ ❌ **Customer Managed Keys** support (if applicable)?
+- ✅ ❌ **Managed Identities** support (if applicable)?
+
+**Finding**: [List missing interfaces or issues]
+
+### Step 7: Documentation Review
+
+#### README.md Completeness ✅ ❌
+1. ✅ ❌ Module overview and purpose?
+2. ✅ ❌ Features list?
+3. ✅ ❌ Prerequisites (versions, permissions)?
+4. ✅ ❌ Basic usage example?
+5. ✅ ❌ Links to examples directory?
+6. ✅ ❌ Requirements table (Terraform/provider versions)?
+7. ✅ ❌ Inputs table with descriptions?
+8. ✅ ❌ Outputs table with descriptions?
+9. ✅ ❌ Module dependencies documented?
+10. ✅ ❌ Contributing guidelines referenced?
+11. ✅ ❌ License and support information?
+
+#### Example Quality
+- ✅ ❌ **Basic example**: Minimal, copy-paste ready?
+- ✅ ❌ **Common scenarios**: 3-5 real-world use cases?
+- ✅ ❌ **Advanced example**: Complex configurations shown?
+- ✅ ❌ All examples tested and working?
+
+**Finding**: [List documentation gaps]
+
+### Step 8: Nesting Strategy Review (HashiCorp)
+
+If module uses nested modules:
+
+#### External Modules (Child Modules)
+- ✅ ❌ In Terraform Registry or accessible source?
+- ✅ ❌ Versioning strategy documented?
+- ✅ ❌ Parent module dependencies documented?
+- ✅ ❌ Backwards compatibility maintained?
+- ✅ ❌ Not nested more than 2 levels deep?
+
+#### Submodules (Embedded)
+- ✅ ❌ Appropriate for local reuse only?
+- ✅ ❌ Versioned with parent module?
+- ✅ ❌ Not duplicated elsewhere (should be external if shared)?
+
+**Finding**: [Nesting approach appropriate? Issues?]
+
+### Step 9: Testing Coverage
+
+#### Test Presence ✅ ❌
+- ✅ ❌ Unit tests (validation logic)?
+- ✅ ❌ Integration tests (end-to-end)?
+- ✅ ❌ Example tests (all examples validated)?
+
+#### For Azure (AVM - TFNFR Requirements)
+- ✅ ❌ Automated testing framework configured?
+- ✅ ❌ CI pipeline defined?
+- ✅ ❌ Pre-commit hooks (optional but recommended)?
+
+**Finding**: [Test coverage adequate? Gaps?]
+
+### Step 10: AVM Requirements Check (Azure Only)
+
+If this is an Azure module, verify compliance with:
+
+#### Terraform Requirements (TFNFR/TFFR)
+- ✅ ❌ TFNFR1: [Specific requirement - check spec]
+- ✅ ❌ TFNFR2: [Specific requirement - check spec]
+- ✅ ❌ TFFR1: [Specific requirement - check spec]
+- [List relevant requirements based on module type]
+
+#### Shared Requirements (SNFR/SFR)
+- ✅ ❌ SNFR1: [Documentation standards]
+- ✅ ❌ SNFR20: [GitHub team requirement - 2+ owners]
+- ✅ ❌ SFR1: [RBAC support]
+- ✅ ❌ SFR2: [Tagging support]
+- [List relevant requirements]
+
+#### Module-Specific (RMFR/RMNFR or PMFR/PMNFR)
+- ✅ ❌ Resource/Pattern specific requirements
+- [List based on module classification]
+
+**Use Terraform MCP Server** to validate provider documentation
+
+**Finding**: [AVM compliance status]
+
+---
+
+## Review Output Format
+
+### Summary
+
+**Module**: [Name]
+**Provider**: [Cloud provider]
+**Classification**: [Resource/Pattern/Utility]
+**Overall Assessment**: [Pass ✅ / Needs Improvement ⚠️ / Fail ❌]
+
+### Strengths
+- [List what the module does well]
+- [Reference specific best practices followed]
+
+### Critical Issues (MUST Fix)
+Priority issues that violate requirements:
+1. **Issue**: [Description]
+   - **Requirement**: [TFNFR1, HashiCorp scoping principle, etc.]
+   - **Impact**: [Why this matters]
+   - **Recommendation**: [Specific fix]
+
+### Improvements (SHOULD Address)
+Recommended enhancements:
+1. **Issue**: [Description]
+   - **Current State**: [What exists now]
+   - **Desired State**: [What should exist]
+   - **Recommendation**: [How to improve]
+
+### Nice-to-Have (Optional)
+Lower priority suggestions:
+1. [Enhancement idea]
+
+### Compliance Score Card
+
+| Category | Status | Notes |
+|----------|--------|-------|
+| Scoping (HashiCorp) | ✅ ⚠️ ❌ | [Brief note] |
+| Structure | ✅ ⚠️ ❌ | [Brief note] |
+| Variables (MVP) | ✅ ⚠️ ❌ | [Brief note] |
+| Outputs | ✅ ⚠️ ❌ | [Brief note] |
+| Documentation | ✅ ⚠️ ❌ | [Brief note] |
+| Examples | ✅ ⚠️ ❌ | [Brief note] |
+| Testing | ✅ ⚠️ ❌ | [Brief note] |
+| Nesting Strategy | ✅ ⚠️ ❌ N/A | [Brief note] |
+| AVM Compliance (if Azure) | ✅ ⚠️ ❌ N/A | [Brief note] |
+
+### Next Steps
+1. [Prioritized action item]
+2. [Prioritized action item]
+3. [Prioritized action item]
+
+---
+
+## Module to Review
+
+**Provide**:
+- Module repository URL or path
+- Or paste module code/structure
+
+**I will analyze it against**:
+- HashiCorp module design principles
+- AVM requirements (if Azure)
+- Industry best practices
+- Latest provider documentation (via Terraform MCP Server)

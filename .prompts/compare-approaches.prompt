@@ -1,0 +1,288 @@
+# Compare Terraform Module Approaches
+
+You are evaluating multiple design approaches for a Terraform module against **HashiCorp official module design principles** and **Azure Verified Modules (AVM)** best practices.
+
+## Process
+
+### Step 1: Define the Context
+
+**Module Details**:
+- **Cloud Provider**: [Azure / AWS / GCP / Multi-cloud]
+- **Module Purpose**: [What infrastructure is being deployed]
+- **Module Type**: [Resource / Pattern / Utility]
+- **Current Challenge**: [What design decision needs to be made]
+
+### Step 2: Document Approaches
+
+List all alternatives being considered:
+
+#### Approach A: [Name]
+**Description**: [How this approach works]
+
+**Pros**:
+- [Advantage 1]
+- [Advantage 2]
+- [Advantage 3]
+
+**Cons**:
+- [Disadvantage 1]
+- [Disadvantage 2]
+- [Disadvantage 3]
+
+**Example**:
+```hcl
+# Code snippet showing this approach
+```
+
+---
+
+#### Approach B: [Name]
+**Description**: [How this approach works]
+
+**Pros**:
+- [Advantage 1]
+- [Advantage 2]
+
+**Cons**:
+- [Disadvantage 1]
+- [Disadvantage 2]
+
+**Example**:
+```hcl
+# Code snippet showing this approach
+```
+
+---
+
+#### Approach C (Optional): [Name]
+[Same structure as above]
+
+---
+
+### Step 3: Evaluation Criteria
+
+Evaluate each approach against:
+
+#### HashiCorp Scoping Principles
+1. **Encapsulation** - Does it group the right infrastructure together?
+2. **Privileges** - Does it respect security boundaries?
+3. **Volatility** - Are static and dynamic resources properly separated?
+
+#### MVP Philosophy
+1. **80% Use Cases** - Does it target common scenarios (not edge cases)?
+2. **Simplicity** - Is it simple to understand and use?
+3. **Variable Exposure** - Only most commonly modified arguments?
+4. **Output Maximization** - Does it output useful information?
+
+#### Module Classification Fit
+1. **Resource Module**: Single primary resource with best practices?
+2. **Pattern Module**: Multiple resources forming a solution?
+3. **Utility Module**: Helper functions, no resources?
+
+#### Nesting Strategy (if applicable)
+1. **External Module**: Should this be shared/versioned independently?
+2. **Submodule**: Only used within parent module?
+3. **Depth**: Avoids nesting more than 2 levels?
+
+#### Documentation & Examples
+1. **Clear Purpose**: Easy to explain?
+2. **Example Quality**: Basic + common + advanced scenarios?
+3. **Maintenance**: Easy to update and evolve?
+
+#### For Azure (AVM Compliance)
+1. **Interfaces**: Supports RBAC, locks, tags, diagnostic settings?
+2. **WAF Alignment**: Security/reliability/performance best practices?
+3. **Requirements**: Meets TFNFR, TFFR, SNFR, SFR standards?
+
+#### Long-term Considerations
+1. **Versioning**: Breaking change risk?
+2. **Backwards Compatibility**: Can evolve without breaking consumers?
+3. **Support Burden**: Maintenance complexity?
+4. **Community Adoption**: Likely to be reused?
+
+---
+
+### Step 4: Comparison Matrix
+
+| Criterion | Approach A | Approach B | Approach C |
+|-----------|------------|------------|------------|
+| **Encapsulation** | ⭐⭐⭐ Good | ⭐⭐ Fair | ⭐⭐⭐⭐ Excellent |
+| **Privileges** | ⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ |
+| **Volatility** | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **MVP Simplicity** | ⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ |
+| **User Experience** | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
+| **Maintainability** | ⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ |
+| **WAF Alignment** | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **Extensibility** | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+
+**Rating Scale**: ⭐ Poor | ⭐⭐ Fair | ⭐⭐⭐ Good | ⭐⭐⭐⭐ Excellent
+
+---
+
+### Step 5: Trade-off Analysis
+
+#### Complexity vs Flexibility
+- **Approach A**: [Analysis]
+- **Approach B**: [Analysis]
+- **Approach C**: [Analysis]
+
+**Winner**: [Which balances best for your use case]
+
+#### Ease of Use vs Customization
+- **Approach A**: [Analysis]
+- **Approach B**: [Analysis]
+- **Approach C**: [Analysis]
+
+**Winner**: [Which fits your consumption model (service catalog vs franchise)]
+
+#### Short-term Speed vs Long-term Maintenance
+- **Approach A**: [Analysis]
+- **Approach B**: [Analysis]
+- **Approach C**: [Analysis]
+
+**Winner**: [Which has better long-term value]
+
+---
+
+### Step 6: Requirement Alignment
+
+#### HashiCorp Principles
+| Principle | Best Aligned Approach | Reasoning |
+|-----------|----------------------|-----------|
+| **Scoping** | [A/B/C] | [Why] |
+| **MVP** | [A/B/C] | [Why] |
+| **Nesting** | [A/B/C] | [Why] |
+| **Collaboration** | [A/B/C] | [Why] |
+
+#### AVM Requirements (if Azure)
+| Requirement | Best Aligned Approach | Reasoning |
+|-------------|----------------------|-----------|
+| **TFNFR** | [A/B/C] | [Specific requirement] |
+| **TFFR** | [A/B/C] | [Specific requirement] |
+| **SNFR** | [A/B/C] | [Specific requirement] |
+| **Interfaces** | [A/B/C] | [Which supports RBAC, locks, tags best] |
+
+---
+
+### Step 7: Use Terraform MCP Server
+
+Validate against latest provider documentation:
+
+**Query**: "What are the latest best practices for [resource/pattern]?"
+
+**MCP Findings**:
+- [Latest recommendations]
+- [New features that might influence decision]
+- [Deprecated approaches to avoid]
+
+---
+
+### Step 8: Recommendation
+
+#### Recommended Approach: **[A / B / C]**
+
+**Primary Reasons**:
+1. [Reason 1 with citation - e.g., "Aligns with HashiCorp scoping principle X"]
+2. [Reason 2 with citation - e.g., "Meets AVM requirement TFNFR1"]
+3. [Reason 3 with citation - e.g., "Targets 80% use cases per MVP philosophy"]
+
+**Implementation Guidance**:
+```hcl
+# Recommended implementation pattern
+```
+
+**Migration Path** (if changing from existing approach):
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+#### Alternative Consideration: **[A / B / C]**
+
+**When to use instead**:
+- [Scenario 1]
+- [Scenario 2]
+
+**Example**: If [specific constraint], consider [alternative approach]
+
+---
+
+### Step 9: Risk Assessment
+
+#### Recommended Approach Risks
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| [Risk 1] | Low/Med/High | Low/Med/High | [How to mitigate] |
+| [Risk 2] | Low/Med/High | Low/Med/High | [How to mitigate] |
+
+#### Long-term Implications
+- **Year 1**: [Expected state]
+- **Year 2+**: [Evolution path]
+- **Breaking Changes**: [Likelihood and strategy]
+
+---
+
+### Step 10: Validation Checklist
+
+Before finalizing decision:
+
+- [ ] Aligns with HashiCorp scoping principles (encapsulation, privileges, volatility)
+- [ ] Follows MVP philosophy (80% use cases, simple start)
+- [ ] Respects nesting strategy (max 2 levels deep)
+- [ ] Provides clear consumption model (service catalog or franchise)
+- [ ] Includes comprehensive examples (basic, common, advanced)
+- [ ] Documented thoroughly (README, usage, variables, outputs)
+- [ ] Tested appropriately (unit, integration, examples)
+- [ ] For Azure: Meets AVM requirements (TFNFR, TFFR, SNFR, SFR)
+- [ ] For Azure: Supports standard interfaces (RBAC, locks, tags, diagnostic settings)
+- [ ] Validated against latest provider docs (via Terraform MCP Server)
+- [ ] Team consensus achieved
+- [ ] Migration plan defined (if applicable)
+
+---
+
+## Your Comparison Request
+
+**Provide the following**:
+
+### Module Context
+- **Provider**: [Azure / AWS / GCP / Other]
+- **Purpose**: [What infrastructure]
+- **Type**: [Resource / Pattern / Utility]
+
+### Approach A: [Name]
+- **Description**: [How it works]
+- **Pros**: [List advantages]
+- **Cons**: [List disadvantages]
+- **Code Example**: [Snippet]
+
+### Approach B: [Name]
+- **Description**: [How it works]
+- **Pros**: [List advantages]
+- **Cons**: [List disadvantages]
+- **Code Example**: [Snippet]
+
+### (Optional) Approach C: [Name]
+[Same structure]
+
+### Decision Criteria
+What matters most for this decision?
+- [ ] Simplicity
+- [ ] Flexibility
+- [ ] Security
+- [ ] Performance
+- [ ] Maintenance burden
+- [ ] Team expertise
+- [ ] Compliance requirements
+- [ ] Other: [Specify]
+
+---
+
+**I will then**:
+- Evaluate each approach against HashiCorp + AVM principles
+- Create comparison matrix
+- Analyze trade-offs
+- Validate with Terraform MCP Server (latest provider docs)
+- Provide recommendation with justification
+- Identify risks and mitigation strategies
+- Suggest implementation path

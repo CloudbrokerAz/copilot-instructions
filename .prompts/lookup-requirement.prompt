@@ -1,0 +1,294 @@
+# Lookup Terraform Module Requirement
+
+You are helping locate and explain specific requirements for Terraform module design from **HashiCorp official guidelines** and **Azure Verified Modules (AVM)** specifications.
+
+## How to Use This Prompt
+
+You can search by:
+1. **Requirement ID** (e.g., TFNFR1, RMFR3, SNFR5)
+2. **Keywords** (e.g., "tagging", "RBAC", "diagnostic settings")
+3. **Topic** (e.g., "testing requirements", "documentation standards")
+4. **HashiCorp Principle** (e.g., "scoping", "MVP", "nesting")
+
+---
+
+## Search Request
+
+**What are you looking for?**
+
+- **Requirement ID**: [e.g., TFNFR1, RMFR2, SNFR5] OR
+- **Keywords**: [e.g., tagging, RBAC, private endpoints] OR
+- **Topic**: [e.g., testing, documentation, naming] OR
+- **HashiCorp Principle**: [e.g., scoping, MVP, consumption models]
+
+**Provider Context** (optional): [Azure / AWS / GCP / Any]
+
+---
+
+## Response Format
+
+### Requirement Details
+
+#### **Requirement ID**: [ID if AVM, or "HashiCorp Principle: [Name]"]
+
+**Category**: [TFNFR / TFFR / SNFR / SFR / RMFR / RMNFR / PMFR / PMNFR / HashiCorp Principle]
+
+**Applies To**: 
+- [ ] All Terraform Modules
+- [ ] Azure Modules (AVM only)
+- [ ] Resource Modules
+- [ ] Pattern Modules
+- [ ] Utility Modules
+
+**Priority**: [MUST / SHOULD / MAY / RECOMMENDED]
+
+---
+
+### Requirement Statement
+
+**Official Text**:
+> [Exact requirement text from specification or HashiCorp documentation]
+
+**Plain English**:
+[Simplified explanation of what this requirement means]
+
+---
+
+### Practical Meaning
+
+**What This Requires**:
+1. [Specific action or constraint]
+2. [Specific action or constraint]
+3. [Specific action or constraint]
+
+**Why It Matters**:
+[Explanation of the reasoning behind this requirement]
+
+**Impact on Module Design**:
+[How this affects your module's structure, code, or documentation]
+
+---
+
+### Implementation Guidance
+
+#### For Module Authors
+
+**Do**:
+✅ [Specific action to comply]
+✅ [Specific action to comply]
+✅ [Specific action to comply]
+
+**Don't**:
+❌ [Common mistake to avoid]
+❌ [Common mistake to avoid]
+
+#### Code Example
+
+**Compliant Implementation**:
+```hcl
+# Example showing how to meet this requirement
+```
+
+**Non-Compliant Example** (avoid this):
+```hcl
+# Example showing what NOT to do
+```
+
+---
+
+### Related Requirements
+
+**Dependencies**:
+- [Requirement ID]: [Brief description]
+- [Requirement ID]: [Brief description]
+
+**Related Concepts**:
+- [HashiCorp Principle or AVM Concept]: [How it connects]
+- [HashiCorp Principle or AVM Concept]: [How it connects]
+
+**See Also**:
+- [Link to HashiCorp documentation]
+- [Link to AVM specification]
+
+---
+
+### Validation Checklist
+
+Use this to verify compliance:
+
+- [ ] [Specific check 1]
+- [ ] [Specific check 2]
+- [ ] [Specific check 3]
+- [ ] [Specific check 4]
+
+**Tools to Help**:
+- Terraform MCP Server: [Query to validate provider docs]
+- `terraform fmt`: [If formatting-related]
+- `terraform validate`: [If syntax-related]
+- Test framework: [If testing-related]
+
+---
+
+### Common Questions
+
+**Q: [Common question about this requirement]**
+A: [Answer]
+
+**Q: [Common question about this requirement]**
+A: [Answer]
+
+**Q: Does this apply to [specific scenario]?**
+A: [Yes/No with explanation]
+
+---
+
+### Examples from Real Modules
+
+**Example 1: [Module name]**
+- **How it implements**: [Description]
+- **Code snippet**: [Link or snippet]
+
+**Example 2: [Module name]**
+- **How it implements**: [Description]
+- **Code snippet**: [Link or snippet]
+
+---
+
+## Quick Reference: Requirement Categories
+
+### AVM (Azure Modules)
+
+#### Terraform-Specific
+- **TFNFR** (Non-Functional): Structure, testing, CI/CD, repository setup
+- **TFFR** (Functional): Variable patterns, resource configs, interfaces
+
+#### Shared (All Languages)
+- **SNFR** (Non-Functional): Docs, naming, versioning, support, ownership
+- **SFR** (Functional): Common patterns (RBAC, tags, locks, diagnostic settings)
+
+#### Module Type-Specific
+- **RMFR** (Resource Functional): Resource module capabilities
+- **RMNFR** (Resource Non-Functional): Resource module standards
+- **PMFR** (Pattern Functional): Pattern module capabilities
+- **PMNFR** (Pattern Non-Functional): Pattern module standards
+
+### HashiCorp Principles
+
+#### Core Concepts
+- **Scoping**: Encapsulation, Privileges, Volatility dimensions
+- **MVP**: 80% use cases, simple start, maximize outputs
+- **Nesting**: External modules vs submodules, max 2 levels
+- **Workflows**: VCS-driven, API-driven, CLI-driven
+- **Consumption**: Service Catalog vs Infrastructure Franchise
+- **Collaboration**: Roadmap, requirements, open-source principles
+
+---
+
+## File Locations Reference
+
+### AVM Documentation (Azure)
+```
+/Users/aarone/Documents/repos/Azure-Verified-Modules/
+└── docs/content/specs-defs/
+    ├── includes/
+    │   ├── terraform/
+    │   │   ├── shared/functional/    # TFFR1.md, TFFR2.md, ...
+    │   │   └── shared/non-functional/ # TFNFR1.md, TFNFR2.md, ...
+    │   └── shared/
+    │       ├── resource/functional/   # RMFR1.md, RMFR2.md, ...
+    │       ├── resource/non-functional/ # RMNFR1.md, ...
+    │       ├── pattern/functional/    # PMFR1.md
+    │       ├── pattern/non-functional/ # PMNFR1.md, ...
+    │       └── shared/
+    │           ├── functional/        # SFR1.md, SFR2.md, ...
+    │           └── non-functional/    # SNFR1.md, SNFR2.md, ...
+    ├── specs/terraform/
+    │   ├── resource.md               # Full resource spec
+    │   ├── pattern.md                # Full pattern spec
+    │   └── interfaces.md             # Interface definitions
+    ├── team-definitions.md           # Roles and RACI
+    └── module-lifecycle.md           # Lifecycle states
+```
+
+### HashiCorp Official Resources
+- **Module Creation**: https://developer.hashicorp.com/terraform/tutorials/modules/pattern-module-creation
+- **Module Overview**: https://developer.hashicorp.com/terraform/tutorials/modules/module
+- **Consumption Models**: https://developer.hashicorp.com/validated-designs/terraform-operating-guides-adoption/consumption-models
+- **Workflows**: https://developer.hashicorp.com/validated-designs/terraform-operating-guides-adoption/terraform-workflows
+
+---
+
+## Example Queries
+
+### Example 1: Find by ID
+**Query**: "TFNFR1"
+
+**Result**: 
+- Reads `/docs/.../TFNFR1.md`
+- Explains the requirement
+- Shows implementation examples
+- Lists related requirements
+
+### Example 2: Find by Keyword
+**Query**: "tagging"
+
+**Result**:
+- Finds SFR2 (AVM tagging requirement)
+- Explains HashiCorp variable naming for tags
+- Shows tag merging patterns
+- Provides code examples
+
+### Example 3: Find by Topic
+**Query**: "testing requirements"
+
+**Result**:
+- Lists all testing-related requirements (TFNFR for testing)
+- Explains HashiCorp collaboration testing principles
+- Shows test structure examples
+- References CI/CD integration
+
+### Example 4: HashiCorp Principle
+**Query**: "scoping principles"
+
+**Result**:
+- Explains encapsulation, privileges, volatility
+- Provides real-world scoping examples
+- Shows how to apply to module design decisions
+- Links to HashiCorp official docs
+
+---
+
+## Advanced Search
+
+### Multi-Keyword Search
+**Query**: "RBAC AND diagnostic settings"
+
+**Result**: 
+- SFR1 (RBAC)
+- SFR-related diagnostic settings requirement
+- Shows how to implement both interfaces together
+- Example of module supporting both
+
+### Provider-Specific Search
+**Query**: "AWS Lambda best practices"
+
+**Result**:
+- Uses Terraform MCP Server to get latest Lambda provider docs
+- Shows HashiCorp principles applied to Lambda
+- Provides Lambda-specific variable patterns
+- References community Lambda modules
+
+### Comparison Search
+**Query**: "Compare HashiCorp MVP vs AVM required/optional inputs"
+
+**Result**:
+- HashiCorp: 80% use cases, only expose common variables
+- AVM: Minimize required inputs, sensible defaults for optional
+- Shows where they align and differ
+- Provides recommendation for balancing both
+
+---
+
+**What requirement do you need help with?**
+
+[Enter your search query here]

@@ -1,0 +1,238 @@
+# Design New Terraform Module
+
+You are designing a new Terraform module from scratch following both **HashiCorp official module design principles** and **Azure Verified Modules (AVM)** best practices (when applicable).
+
+## Phase 1: Requirements Gathering
+
+### Essential Questions
+1. **Cloud Provider(s)**: Which provider(s)? (Azure, AWS, GCP, multi-cloud)
+2. **Primary Resource(s)**: What infrastructure are you deploying?
+3. **Module Classification**: 
+   - **Resource Module**: Single primary resource with best practices
+   - **Pattern Module**: Multiple resources forming a solution/architecture
+   - **Utility Module**: Helper functions, no resources (except scripts)
+4. **Use Cases**: What are the primary use cases (aim for 80%)?
+5. **Volatility**: How often will this infrastructure change?
+6. **Privilege Boundaries**: Who manages this infrastructure?
+7. **Consumption Model**: Service Catalog (standardized) or Franchise (flexible)?
+
+## Phase 2: Apply Scoping Principles (HashiCorp)
+
+Evaluate each dimension:
+
+### **Encapsulation**
+- What infrastructure is ALWAYS deployed together?
+- What should NOT be included (external dependencies)?
+- Can you explain the module's purpose in one sentence?
+
+### **Privileges**
+- Does this cross team/permission boundaries?
+- Should this be split by security requirements?
+- Who will have permission to deploy this?
+
+### **Volatility**
+- What changes frequently vs. rarely?
+- Should stable components be separated?
+- What's the deployment cadence?
+
+**Decision**: Scope the module to [describe what's included/excluded based on analysis]
+
+## Phase 3: Define MVP (Minimum Viable Product)
+
+Following HashiCorp's 80% rule:
+
+### Core Features (MUST HAVE)
+- List 3-5 features that cover 80% of use cases
+- Exclude edge cases for MVP
+
+### Required Inputs
+- Only expose MOST commonly modified arguments
+- Everything else gets sensible defaults
+
+### Outputs (Maximize!)
+- Output ALL useful information (even if not immediately needed)
+- Include: IDs, attributes, FQDNs, endpoints
+
+## Phase 4: Module Structure
+
+Generate the structure:
+
+```
+terraform-<provider>-<name>/
+├── main.tf              # Primary resource configurations
+├── variables.tf         # Input variables
+├── outputs.tf           # Output definitions
+├── versions.tf          # Version constraints
+├── README.md            # Documentation
+├── CHANGELOG.md         # Version history
+├── LICENSE              # License
+├── examples/
+│   ├── basic/          # Minimal example (REQUIRED)
+│   ├── complete/       # Full-featured example
+│   └── <scenario>/     # Additional use cases
+├── tests/              # Automated tests
+└── modules/            # Submodules (if needed)
+```
+
+## Phase 5: Variable Design
+
+### Required Variables (No Defaults)
+```hcl
+variable "resource_group_name" {
+  description = "The name of the resource group"
+  type        = string
+}
+
+variable "location" {
+  description = "Azure region for deployment"
+  type        = string
+}
+```
+
+### Optional Variables (With Defaults)
+```hcl
+variable "enable_telemetry" {
+  description = "Enable telemetry for Microsoft"
+  type        = bool
+  default     = true
+}
+
+variable "tags" {
+  description = "Tags to apply to resources"
+  type        = map(string)
+  default     = {}
+}
+```
+
+### For Azure (AVM Interfaces)
+If Azure, include support for:
+- `diagnostic_settings` - Logging configuration
+- `role_assignments` - RBAC
+- `lock` - Resource locks
+- `private_endpoints` - Private connectivity
+- `customer_managed_key` - Encryption keys
+
+## Phase 6: Output Design
+
+**Maximize outputs** even if not immediately needed:
+
+```hcl
+output "resource_id" {
+  description = "The ID of the <resource>"
+  value       = <provider>_<resource>.main.id
+}
+
+output "resource_name" {
+  description = "The name of the <resource>"
+  value       = <provider>_<resource>.main.name
+}
+
+output "resource" {
+  description = "All attributes of the <resource>"
+  value       = <provider>_<resource>.main
+  sensitive   = true  # If contains sensitive data
+}
+
+# Add all useful outputs...
+```
+
+## Phase 7: Example Planning
+
+### Basic Example (REQUIRED)
+Minimal viable configuration with required inputs only
+
+### Common Scenarios (3-5)
+Based on use cases identified:
+- Example 1: [Common scenario]
+- Example 2: [Common scenario]
+- Example 3: [Common scenario]
+
+### Advanced Example
+Full-featured configuration showing all capabilities
+
+## Phase 8: Documentation Outline
+
+### README.md Structure
+1. **Module Overview** - What it does, why use it
+2. **Features** - Bullet list of capabilities
+3. **Prerequisites** - Terraform version, provider version, permissions
+4. **Usage** - Copy-paste example
+5. **Examples** - Links to example directories
+6. **Requirements** - Auto-generated table
+7. **Inputs** - Auto-generated table with descriptions
+8. **Outputs** - Auto-generated table
+9. **Module Dependencies** - External modules referenced
+10. **Contributing** - Link to contribution guide
+11. **License** - License information
+
+## Phase 9: Compliance Check
+
+### For All Providers (HashiCorp)
+- ✅ Scoped properly (encapsulation + privileges + volatility)?
+- ✅ Named following `terraform-<provider>-<name>` convention?
+- ✅ MVP approach (80% use cases, no edge cases)?
+- ✅ Outputs maximized?
+- ✅ Examples: basic + common scenarios + advanced?
+- ✅ Documentation complete?
+- ✅ Semantic versioning plan?
+
+### For Azure (AVM)
+- ✅ Named following `avm-{res|ptn|utl}-<provider>-<name>`?
+- ✅ WAF-aligned defaults?
+- ✅ Standard interfaces (RBAC, locks, tags, diagnostic settings)?
+- ✅ Private Endpoints support (if applicable)?
+- ✅ TFNFR/TFFR/SNFR/SFR requirements met?
+- ✅ At least 2 owners identified?
+
+## Phase 10: Deliverables
+
+Generate:
+
+1. **Module Structure** - Directory tree with files
+2. **variables.tf** - Skeleton with all variables
+3. **outputs.tf** - Skeleton with all outputs
+4. **main.tf** - Core resource configuration
+5. **README.md** - Complete documentation
+6. **examples/basic/main.tf** - Working basic example
+7. **CHANGELOG.md** - Initial version entry
+
+## Additional Considerations
+
+### Nesting Strategy
+- **External Module**: Need to share across teams? → Publish to registry
+- **Submodule**: Only used within this module? → Embed as submodule
+- **Rule**: Don't nest more than 2 levels deep
+
+### Testing Strategy
+- Unit tests for validation logic
+- Integration tests for end-to-end deployment
+- Example tests to verify all examples work
+
+### Workflow Integration
+- **VCS-driven**: Auto-plan on PR, auto-apply on merge (recommended)
+- **API-driven**: Custom CI/CD pipeline integration
+- **CLI-driven**: Local development, manual triggers
+
+---
+
+## Your Module Design Request
+
+**Provide the following information:**
+
+1. **Cloud Provider**: [Azure / AWS / GCP / Multi-cloud]
+2. **Primary Resource(s)**: [What infrastructure to deploy]
+3. **Module Type**: [Resource / Pattern / Utility]
+4. **Primary Use Cases**: [Describe 2-3 main scenarios]
+5. **Who Will Use It**: [Team type, technical level]
+6. **Deployment Frequency**: [How often changes expected]
+7. **Special Requirements**: [Compliance, security, performance needs]
+
+**I will then**:
+- Apply scoping principles
+- Define the MVP
+- Design inputs/outputs
+- Create module structure
+- Generate documentation outline
+- Provide code skeletons
+- Suggest examples
+- Check compliance with HashiCorp + AVM (if Azure)
