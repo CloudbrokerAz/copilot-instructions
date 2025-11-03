@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+---
+Provide project context and coding guidelines that AI should follow when generating code, answering questions, or reviewing changes.
+
 # Terraform Module Design & Development - AI Workspace Instructions
 
 ## Workspace Context
