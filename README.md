@@ -24,6 +24,14 @@ copilot-instructions/
 │   ├── generate-docs.prompt       # Create documentation
 │   ├── README.md                  # Prompt usage guide
 │   └── QUICK-REFERENCE.md         # Cheat sheet
+├── workshop/                      # 🆕 Terraform industrialization workshop
+│   ├── README.md                  # Workshop overview
+│   ├── 01-07 *.md                 # Topic-specific guides
+│   ├── workshop-agenda.md         # 2-day schedule
+│   ├── key-messages.md            # Talking points
+│   ├── resources.md               # Links and references
+│   └── success-criteria.md        # Measurable outcomes
+├── WORKSHOP-GUIDE.md              # Single-file workshop (legacy)
 └── README.md                      # This file
 ```
 
@@ -306,11 +314,33 @@ Edit `.github/copilot-instructions.md` to add:
 4. **Review before release** - Use review prompt
 5. **Maintain changelog** - Track changes per version
 
-## 🆘 Support
+## � Workshop Materials
+
+### Terraform Industrialization Workshop
+
+This repository includes comprehensive materials for facilitating a **Terraform transformation workshop** with customers/organizations. Located in the **[`workshop/`](./workshop/)** directory.
+
+**What's included:**
+- 2-day workshop agenda with facilitation guide
+- Discovery questions for current state assessment
+- Technical deep-dives (testing, security, Vault, module design)
+- Hands-on exercises for module design and testing
+- Business case framework and ROI calculator
+- Change management and stakeholder engagement strategies
+- Success criteria and measurement framework
+
+**Start here**: [`workshop/README.md`](./workshop/README.md)
+
+**Quick navigation**: [`workshop/NAVIGATION.md`](./workshop/NAVIGATION.md)
+
+---
+
+## �🆘 Support
 
 ### Questions?
 - Check `.prompts/README.md` for prompt usage guide
 - Review `.prompts/QUICK-REFERENCE.md` for cheat sheet
+- Review `workshop/` directory for workshop materials
 - Ask Copilot using workspace context
 
 ### Issues?
